@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "detailedDescription": {
+      "type": "blocks"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "modules": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::module.module"
+    },
+    "size": {
+      "type": "string"
+    },
+    "partNumber": {
+      "type": "string"
+    },
+    "brightness": {
+      "type": "string"
+    },
+    "resolution": {
+      "type": "string"
+    },
+    "contrastRatio": {
+      "type": "string"
+    },
+    "interface": {
+      "type": "string"
+    },
+    "opTemp": {
+      "type": "string"
+    },
+    "backlightLife": {
+      "type": "string"
+    },
+    "datasheet": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}
