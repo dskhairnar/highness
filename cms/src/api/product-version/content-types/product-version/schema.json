@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "products",
+  "collectionName": "product_versions",
   "info": {
-    "singularName": "product",
-    "pluralName": "products",
-    "displayName": "Product",
-    "description": "Product catalog items"
+    "singularName": "product-version",
+    "pluralName": "product-versions",
+    "displayName": "Product Version",
+    "description": "Different versions of products"
   },
   "options": {
     "draftAndPublish": true
@@ -22,37 +22,37 @@
     "description": {
       "type": "blocks"
     },
-    "specifications": {
-      "type": "json"
-    },
-    "product_version": {
+    "product": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::product-version.product-version",
-      "mappedBy": "product"
+      "target": "api::product.product",
+      "inversedBy": "product_version"
     },
-    "product_category": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product-category.product-category"
-    },
-    "productimages": {
+    "productImages": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::image.image"
+    },
+    "specs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::spec.spec"
+    },
+    "version": {
+      "type": "string",
+      "required": true
     },
     "status": {
       "type": "enumeration",
       "enum": [
         "draft",
         "published",
-        "archived"
+        "deprecated"
       ],
       "default": "draft"
     },
-    "featured": {
-      "type": "boolean",
-      "default": false
+    "releaseDate": {
+      "type": "date"
     },
     "order": {
       "type": "integer",
