@@ -23,6 +23,93 @@ This guide will help you set up the Highness project on your local machine. The 
 - [Git](https://git-scm.com/download/mac)
 - [VS Code](https://code.visualstudio.com/) (recommended)
 
+## Pre-Installation Checks
+
+Before starting the installation, ensure you have:
+
+1. **Node.js Version Check**:
+
+   ```bash
+   node --version  # Should be v18 or higher
+   npm --version   # Should be 8 or higher
+   ```
+
+2. **PostgreSQL Version Check**:
+
+   ```bash
+   psql --version  # Should be 14 or higher
+   ```
+
+3. **Git Version Check**:
+
+   ```bash
+   git --version
+   ```
+
+4. **Port Availability**:
+   - Port 1337 (Strapi)
+   - Port 3000 (Backend)
+   - Port 3001 (Frontend)
+   - Port 5432 (PostgreSQL)
+
+## Pre-Clone Checklist
+
+Before cloning the repository, ensure your system meets these requirements:
+
+1. **System Requirements**:
+
+   - Node.js v18 or higher
+   - npm v8 or higher
+   - PostgreSQL v14 or higher
+   - Git v2.30 or higher
+   - At least 4GB of free RAM
+   - At least 2GB of free disk space
+
+2. **Required Ports**:
+
+   - 1337 (Strapi CMS)
+   - 3000 (Backend API)
+   - 3001 (Frontend)
+   - 5432 (PostgreSQL)
+
+3. **Development Tools**:
+   - VS Code (recommended)
+   - Git
+   - PostgreSQL client (pgAdmin for Windows, psql for Mac)
+
+## Important Notes for Clients
+
+1. **Environment Files**:
+
+   - `.env` files are not included in the repository
+   - You must create these files as described in the setup steps
+   - Never commit `.env` files to the repository
+
+2. **Database**:
+
+   - The database must be created before starting the application
+   - Follow the database setup steps carefully
+   - Keep your database credentials secure
+
+3. **Node Modules**:
+
+   - `node_modules` folders are not included
+   - Run `npm install` in each directory (frontend, backend, cms)
+   - This may take several minutes
+
+4. **First-time Setup**:
+
+   - The first build of Strapi may take 5-10 minutes
+   - Frontend build may take 2-3 minutes
+   - This is normal, please be patient
+
+5. **Common Issues to Watch For**:
+   - Node.js version mismatch
+   - PostgreSQL service not running
+   - Port conflicts
+   - Missing environment variables
+   - Permission issues with database user
+
 ## Installation Steps
 
 ### 1. Clone Repository
@@ -221,6 +308,130 @@ npm start
 
 The frontend application will be available at: http://localhost:3000
 
+## Project Structure Verification
+
+After cloning, verify these files exist:
+
+```
+highness/
+├── frontend/
+│   ├── package.json
+│   ├── public/
+│   └── src/
+├── backend/
+│   ├── package.json
+│   └── src/
+├── cms/
+│   ├── package.json
+│   ├── config/
+│   └── src/
+└── README.md
+```
+
+## Known Issues and Solutions
+
+### 1. Backend Issues
+
+- **Port 3000 in use**:
+  ```bash
+  # Windows
+  netstat -ano | findstr :3000
+  # Mac
+  lsof -i :3000
+  ```
+- **Missing .env file**: Create `.env` with required variables
+- **Database connection**: Verify PostgreSQL is running
+
+### 2. CMS Issues
+
+- **First build takes long**: Normal, wait for completion
+- **Missing .env**: Create with database credentials
+- **Permission issues**: Check database user permissions
+- **Port 1337 in use**: Check and free the port
+
+### 3. Frontend Issues
+
+- **Port 3001 in use**:
+  ```bash
+  # Windows
+  netstat -ano | findstr :3001
+  # Mac
+  lsof -i :3001
+  ```
+- **Missing .env**: Create with API URLs
+- **Build fails**: Clear node_modules and reinstall
+
+## Quick Start Guide
+
+1. **Clone and Setup**:
+
+   ```bash
+   git clone https://github.com/dskhairnar/highness.git
+   cd highness
+   ```
+
+2. **Database Setup**:
+
+   ```bash
+   # Create database and user
+   # Follow database setup instructions
+   ```
+
+3. **Environment Files**:
+
+   - Create `.env` files in each directory
+   - Follow the environment setup guide
+
+4. **Install Dependencies**:
+
+   ```bash
+   # In each directory (frontend, backend, cms)
+   npm install
+   ```
+
+5. **Start Services**:
+
+   ```bash
+   # Terminal 1 (CMS)
+   cd cms
+   npm run develop
+
+   # Terminal 2 (Backend)
+   cd backend
+   npm run dev
+
+   # Terminal 3 (Frontend)
+   cd frontend
+   npm start
+   ```
+
+## Verification Steps
+
+After setup, verify:
+
+1. **Database**:
+
+   - Can connect to PostgreSQL
+   - Database 'highness' exists
+   - User has proper permissions
+
+2. **CMS**:
+
+   - Access http://localhost:1337/admin
+   - Can create admin account
+   - Can generate API token
+
+3. **Backend**:
+
+   - Server starts without errors
+   - Can connect to CMS
+   - API endpoints respond
+
+4. **Frontend**:
+   - Application loads
+   - Can connect to backend
+   - No console errors
+
 ## Getting Started
 
 1. Verify Database Connection:
@@ -315,3 +526,69 @@ If you encounter any issues during setup or development:
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [Node.js Documentation](https://nodejs.org/docs/)
 - [React Documentation](https://reactjs.org/docs/getting-started.html)
+
+## Troubleshooting Guide
+
+### 1. Node.js Issues
+
+```bash
+# If you get node version errors
+nvm install 18
+nvm use 18
+
+# If npm install fails
+npm cache clean --force
+rm -rf node_modules
+npm install
+```
+
+### 2. Database Issues
+
+```bash
+# Check PostgreSQL service
+# Windows
+net start postgresql
+
+# Mac
+brew services list
+brew services restart postgresql@14
+```
+
+### 3. Port Issues
+
+```bash
+# Check if ports are in use
+# Windows
+netstat -ano | findstr :1337
+netstat -ano | findstr :3000
+netstat -ano | findstr :3001
+
+# Mac
+lsof -i :1337
+lsof -i :3000
+lsof -i :3001
+```
+
+### 4. Build Issues
+
+```bash
+# Clear build caches
+# In cms directory
+rm -rf .cache build
+npm run build
+
+# In frontend directory
+rm -rf build
+npm run build
+```
+
+## Support Contact
+
+If you encounter any issues not covered in this documentation:
+
+1. Check the troubleshooting guide above
+2. Review the error logs in each component
+3. Contact the development team with:
+   - Error messages
+   - Steps to reproduce
+   - Your environment details (OS, Node version, etc.)
