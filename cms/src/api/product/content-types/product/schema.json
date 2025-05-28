@@ -27,7 +27,7 @@
     },
     "product_version": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::product-version.product-version",
       "mappedBy": "product"
     },

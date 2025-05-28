@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const strapiService = require("../services/strapi");
+const config = require("../config");
+const axios = require("axios");
+const path = require("path");
 
 // Root route
 router.get("/", (req, res) => {
@@ -8,7 +11,7 @@ router.get("/", (req, res) => {
 });
 
 // Categories
-router.get("/categories" , async (req, res) => {
+router.get("/categories", async (req, res) => {
   try {
     console.log("GET /categories - Fetching categories");
     const data = await strapiService.getCategories();
@@ -107,7 +110,16 @@ router.get("/versions", async (req, res) => {
           id: parseInt(product),
         },
       },
-      populate: ["productImages", "specs"],
+      populate: {
+        productImages: {
+          populate: {
+            file: {
+              populate: "*",
+            },
+          },
+        },
+        specs: true,
+      },
     };
 
     const data = await strapiService.getVersions(params);
@@ -146,6 +158,32 @@ router.get("/images", async (req, res) => {
   } catch (error) {
     console.error("Error fetching images:", error.message);
     res.status(500).json({ error: "Failed to fetch images" });
+  }
+});
+
+// Product Images
+router.get("/uploads/*", async (req, res) => {
+  try {
+    const imagePath = req.path;
+    const imageUrl = `${config.strapi.url}${imagePath}`;
+
+    // Fetch the image from Strapi
+    const imageResponse = await axios.get(imageUrl, {
+      responseType: "stream",
+    });
+
+    // Set appropriate headers
+    res.setHeader("Content-Type", imageResponse.headers["content-type"]);
+    res.setHeader("Cache-Control", "public, max-age=31536000"); // Cache for 1 year
+
+    // Pipe the image stream to the response
+    imageResponse.data.pipe(res);
+  } catch (error) {
+    console.error("Error fetching image:", error.message);
+    if (error.response?.status === 404) {
+      return res.status(404).json({ error: "Image not found" });
+    }
+    res.status(500).json({ error: "Failed to fetch image" });
   }
 });
 

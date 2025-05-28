@@ -13,17 +13,9 @@ import {
   Fade,
   Zoom,
   Paper,
-  Divider,
-  Stack,
-  Chip,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CategoryIcon from "@mui/icons-material/Category";
-import InfoIcon from "@mui/icons-material/Info";
-import DescriptionIcon from "@mui/icons-material/Description";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function Categories() {
