@@ -4,17 +4,28 @@
   "info": {
     "singularName": "spec",
     "pluralName": "specs",
-    "displayName": "spec"
+    "displayName": "Spec",
+    "description": "Product specifications with values"
   },
   "options": {
     "draftAndPublish": true
   },
   "attributes": {
-    "Key": {
-      "type": "string"
+    "specKey": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::spec-key.spec-key",
+      "inversedBy": "specs"
     },
-    "Value": {
-      "type": "string"
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "productVersion": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-version.product-version",
+      "inversedBy": "specs"
     }
   }
 }

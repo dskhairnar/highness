@@ -666,10 +666,62 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSpecKeySpecKey extends Struct.CollectionTypeSchema {
+  collectionName: 'spec_keys';
+  info: {
+    description: 'Collection of all possible specification keys for products';
+    displayName: 'Spec Key';
+    pluralName: 'spec-keys';
+    singularName: 'spec-key';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      [
+        'TFT-LCD',
+        'Display Controller',
+        'EL Display',
+        'VFD',
+        'Touch Screen',
+        'Display Enhancement',
+        'Cable Assembly',
+        'Backlight Driver',
+      ]
+    > &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    defaultValue: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    isRange: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::spec-key.spec-key'
+    > &
+      Schema.Attribute.Private;
+    maxValue: Schema.Attribute.String;
+    minValue: Schema.Attribute.String;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    specs: Schema.Attribute.Relation<'oneToMany', 'api::spec.spec'>;
+    unit: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSpecSpec extends Struct.CollectionTypeSchema {
   collectionName: 'specs';
   info: {
-    displayName: 'spec';
+    description: 'Product specifications with values';
+    displayName: 'Spec';
     pluralName: 'specs';
     singularName: 'spec';
   };
@@ -680,15 +732,19 @@ export interface ApiSpecSpec extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Key: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::spec.spec'> &
       Schema.Attribute.Private;
+    productVersion: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-version.product-version'
+    >;
     publishedAt: Schema.Attribute.DateTime;
+    specKey: Schema.Attribute.Relation<'manyToOne', 'api::spec-key.spec-key'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Value: Schema.Attribute.String;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -1209,6 +1265,7 @@ declare module '@strapi/strapi' {
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::product-version.product-version': ApiProductVersionProductVersion;
       'api::product.product': ApiProductProduct;
+      'api::spec-key.spec-key': ApiSpecKeySpecKey;
       'api::spec.spec': ApiSpecSpec;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

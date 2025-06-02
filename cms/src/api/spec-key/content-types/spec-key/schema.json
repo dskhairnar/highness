@@ -1,0 +1,62 @@
+{
+    "kind": "collectionType",
+    "collectionName": "spec_keys",
+    "info": {
+        "singularName": "spec-key",
+        "pluralName": "spec-keys",
+        "displayName": "Spec Key",
+        "description": "Collection of all possible specification keys for products"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "category": {
+            "type": "enumeration",
+            "enum": [
+                "TFT-LCD",
+                "Display Controller",
+                "EL Display",
+                "VFD",
+                "Touch Screen",
+                "Display Enhancement",
+                "Cable Assembly",
+                "Backlight Driver"
+            ],
+            "required": true
+        },
+        "unit": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "isRange": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this spec accepts a range of values"
+        },
+        "minValue": {
+            "type": "string",
+            "description": "Minimum value if isRange is true"
+        },
+        "maxValue": {
+            "type": "string",
+            "description": "Maximum value if isRange is true"
+        },
+        "defaultValue": {
+            "type": "string"
+        },
+        "specs": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::spec.spec",
+            "mappedBy": "specKey"
+        }
+    }
+}

@@ -36,7 +36,8 @@
     "specs": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::spec.spec"
+      "target": "api::spec.spec",
+      "mappedBy": "productVersion"
     },
     "version": {
       "type": "string",
